@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -9,6 +11,11 @@ public class Play
         int numPlayer;
         Player[] players = new Player[4];
         Dice[] dices = new Dice[6];
+        List<Bot> bots = new ArrayList<>();
+        bots.add(new Bot("Bot Alpha"));
+        bots.add(new Bot("Bot Beta"));
+        bots.add(new Bot("Bot Gamma"));
+        bots.add(new Bot("Bot Omega"));
 
         System.out.print("Enter number of players: ");
         numPlayer = in.nextInt();
@@ -41,6 +48,10 @@ public class Play
             int nextDice;
             Random rand = new Random();
 
+            for (int i = 0; i < 4; i++)
+            {
+                System.out.println(players[i].getName() + " choose by enter " + (i + 1));
+            }
             System.out.print("Enter the next player: ");
             nextPlayer = in.nextInt();
             in.nextLine();
@@ -55,7 +66,15 @@ public class Play
                 {
                     if (i != nextPlayer - 1 && players[i] instanceof Bot)
                     {
-                        ((Bot) players[i]).loseBehavior();
+                        if (((Bot) players[i]).loseBehavior() == 2)
+                        {
+                            System.out.println(players[i].getName() + " quited");
+                            players[i] = bots.get(rand.nextInt(4));
+                            System.out.println(players[i].getName() + " enters the game");
+                            System.out.println("****************************\nStart Again!");
+
+                            break;
+                        }
                     }
                 }
 
